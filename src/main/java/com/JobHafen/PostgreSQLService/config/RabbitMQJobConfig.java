@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class RabbitMQConfig {
+public class RabbitMQJobConfig {
     public static final String EXCHANGE = "jobs.exchange";
     public static final String REQUEST_QUEUE = "jobs.request.queue";
     public static final String ROUTING_KEY = "jobs.request";

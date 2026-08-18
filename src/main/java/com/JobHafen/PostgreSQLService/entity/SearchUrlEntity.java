@@ -26,18 +26,14 @@ public class SearchUrlEntity {
     private String keyword;
 
     @Column
-    private String portal;
-    @Column
     private String postal_code;
     @Column
     private String radius;
-    @Column
-    private Boolean isCustom;
 
-    public void setUrl(List<String> urls) {
+    public void setUrls(List<String> urls) {
         this.urls = urls;
     }
-    public List<String> getUrl() {
+    public List<String> getUrls() {
         return urls;
     }
 
@@ -48,11 +44,6 @@ public class SearchUrlEntity {
         return keyword;
     }
 
-    public void setPortal( String portal) {
-        this.portal = portal;
-    }
-    public String getPortal(){return portal;}
-
     public void setPostal_code(String postalCode) {
         this.postal_code = postalCode;
     }
@@ -62,12 +53,6 @@ public class SearchUrlEntity {
         this.radius = radius;
     }
     public String getRadius() {return radius;}
-    public void setIsCustom(boolean isCustom) {
-        this.isCustom = isCustom;
-    }
-    public boolean getIsCustom(){
-        return isCustom;
-    }
 
     public Long getId(){return id;}
 }

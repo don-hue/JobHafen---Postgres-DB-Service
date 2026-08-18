@@ -1,18 +1,14 @@
-package com.JobHafen.PostgreSQLService.controller;
+package com.JobHafen.PostgreSQLService.eventListener;
 
-import com.JobHafen.PostgreSQLService.config.RabbitMQConfig;
+import com.JobHafen.PostgreSQLService.config.RabbitMQJobConfig;
 import com.JobHafen.PostgreSQLService.dto.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.core.annotation.MergedAnnotations;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JobController {
-    public JobController() {
-        System.out.println("JobController created");
-    }
+public class JobEventListener {
     @RabbitListener(
-            queues = RabbitMQConfig.REQUEST_QUEUE
+            queues = RabbitMQJobConfig.REQUEST_QUEUE
     )
     public Message consume(Message message) {
         Message test = new Message();

@@ -2,7 +2,6 @@ package com.JobHafen.PostgreSQLService.service;
 import com.JobHafen.PostgreSQLService.entity.JobEntity;
 import com.JobHafen.PostgreSQLService.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
