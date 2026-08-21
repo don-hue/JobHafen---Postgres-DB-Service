@@ -6,10 +6,14 @@ import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.DefaultClassMapper;
 import org.springframework.amqp.support.converter.JacksonJsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 public class RabbitMQJobConfig {
@@ -23,27 +27,43 @@ public class RabbitMQJobConfig {
     }
 
     @Bean
-    public MessageConverter messageConverter() {
-        return new JacksonJsonMessageConverter();
+    public MessageConverter jobMessageConverter() {
+        JacksonJsonMessageConverter converter =
+                new JacksonJsonMessageConverter();
+
+        DefaultClassMapper classMapper = new DefaultClassMapper();
+
+        Map<String, Class<?>> idClassMapping = new HashMap<>();
+
+        idClassMapping.put(
+                "com.JobHafen.Proxy.dto.SearchDto",
+                com.JobHafen.PostgreSQLService.dto.SearchDto.class
+        );
+
+        classMapper.setIdClassMapping(idClassMapping);
+
+        converter.setClassMapper(classMapper);
+
+        return converter;
     }
 
     @Bean
-    public DirectExchange exchange() {
+    public DirectExchange jobExchange() {
         return new DirectExchange(EXCHANGE);
     }
 
     @Bean
-    public Binding binding() {
+    public Binding jobBinding() {
         return BindingBuilder
                 .bind(replyJobs())
-                .to(exchange())
+                .to(jobExchange())
                 .with(ROUTING_KEY);
     }
 
     @Bean
-    public RabbitTemplate template(ConnectionFactory connectionFactory){
+    public RabbitTemplate jobTemplate(ConnectionFactory connectionFactory){
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
-        template.setMessageConverter(messageConverter());
+        template.setMessageConverter(jobMessageConverter());
         template.setReplyTimeout(10000);
         return template;
     }

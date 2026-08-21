@@ -22,14 +22,21 @@ import java.util.List;
 @Service
 public class UtilityService {
     public List<String> buildStepstoneUrl(SearchDto search){
-        String url = "https://www.stepstone.de/" +
-                "jobs/" + URLEncoder.encode(search.keyword(), StandardCharsets.UTF_8).replace("+", "%20") + "/" +
-                "in-" + search.postal_code() + "?whatType=autosuggest&" +
-                "radius=" + search.radius() + "&" +
-                "q" + URLEncoder.encode(search.keyword(), StandardCharsets.UTF_8).replace("+", "%20") + "&" +
-                "searchOrigin=Resultlist_top-search";
+        try{
+            System.out.println("XXX in try stepstone");
+            String url = "https://www.stepstone.de/" +
+                    "jobs/" + URLEncoder.encode(search.keyword(), StandardCharsets.UTF_8).replace("+", "%20") + "/" +
+                    "in-" + search.postal_code() + "?whatType=autosuggest&" +
+                    "radius=" + search.radius() + "&" +
+                    "q" + URLEncoder.encode(search.keyword(), StandardCharsets.UTF_8).replace("+", "%20") + "&" +
+                    "searchOrigin=Resultlist_top-search";
 
-        return stepstoneSearchToUrls(url);
+            return stepstoneSearchToUrls(url);
+        } catch (Exception e) {
+            System.out.println("Error: "+ e.getMessage());
+            throw e;
+        }
+
     }
     public List<String> buildCommerzbankApiUrlNoGeo(
             String keyword,
@@ -96,6 +103,7 @@ public class UtilityService {
     private List<String> stepstoneSearchToUrls(String stepstoneUrl) {
         int pages = howManyPages(stepstoneUrl);
         List<String> stepstoneUrls = new ArrayList<>();
+
         try {
             for (int i = 1; i < pages + 1; i++) {
                 String pagedURL = stepstoneUrl + "&page=" + i;
@@ -122,13 +130,12 @@ public class UtilityService {
                         .get();
                 page++;
 
-
             } catch (IOException e) {
-                System.out.println("in StupidCrawler" + e.getMessage());
+                System.out.println("Error: "+ e.getMessage());
                 page--;
                 goOn = false;
             } catch (RuntimeException e) {
-                System.out.println("in StupidCrawler" + e.getMessage());
+                System.out.println("Error: "+ e.getMessage());
                 page--;
                 goOn = false;
             }
@@ -137,7 +144,6 @@ public class UtilityService {
     }
     private double[] getGeoData(String postalCode) {
         try (WebClient webClient = new WebClient()) {
-
             webClient.getOptions().setJavaScriptEnabled(false);
             webClient.getOptions().setCssEnabled(false);
 
@@ -156,17 +162,16 @@ public class UtilityService {
             JsonNode first = root.get(0);
             double lat = first.path("lat").asDouble();
             double lon = first.path("lon").asDouble();
-
             return new double[]{lat, lon};
 
         } catch (MalformedURLException e) {
-            System.out.println("Error" + e.getMessage());
+            System.out.println("Error in geoData" + e.getMessage());
             throw new RuntimeException(e);
         } catch (IOException e) {
-            System.out.println("Error" + e.getMessage());
+            System.out.println("Error in geoData" + e.getMessage());
             throw new RuntimeException(e);
         } catch (RuntimeException e) {
-            System.out.println("Error" + e.getMessage());
+            System.out.println("Error in geoData" + e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -190,7 +195,6 @@ public class UtilityService {
     public SearchEntityDto mapSearchEntityToDto(SearchUrlEntity entity) {
         return new SearchEntityDto(
                 entity.getId(),
-                entity.getUrls(),
                 entity.getKeyword(),
                 entity.getPostal_code(),
                 entity.getRadius()
