@@ -1,7 +1,8 @@
-package com.JobHafen.PostgreSQLService.eventListener;
+package com.JobHafen.PostgreSQLService.consumer;
 import com.JobHafen.PostgreSQLService.config.RabbitMQSearchConfig;
 import com.JobHafen.PostgreSQLService.dto.SearchDto;
 import com.JobHafen.PostgreSQLService.dto.SearchEntityDto;
+import com.JobHafen.PostgreSQLService.entity.SearchUrlEntity;
 import com.JobHafen.PostgreSQLService.service.SearchService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class SearchUrlEventListener {
+public class SearchConsumer {
     @Autowired
     SearchService searchService;
     @RabbitListener(
@@ -33,10 +34,7 @@ public class SearchUrlEventListener {
             containerFactory = "searchListenerFactory"
     )
     public List<SearchEntityDto> getSearches(){
-        System.out.println("XXX in getSearches");
-        System.out.println("!!! GET SEARCH RECEIVED !!!");
         try{
-
             return searchService.getAllSearches();
         } catch (Exception e) {
             System.out.println("Error in getSearch" + e.getMessage());

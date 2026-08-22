@@ -2,14 +2,15 @@ package com.JobHafen.PostgreSQLService.service;
 import com.JobHafen.PostgreSQLService.config.Constants;
 import com.JobHafen.PostgreSQLService.dto.SearchDto;
 import com.JobHafen.PostgreSQLService.dto.SearchEntityDto;
+import com.JobHafen.PostgreSQLService.dto.SearchToCrawlDto;
 import com.JobHafen.PostgreSQLService.entity.SearchUrlEntity;
 import com.JobHafen.PostgreSQLService.repository.SearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 public class SearchService {
@@ -48,5 +49,28 @@ public class SearchService {
                 searches.add(util.mapSearchEntityToDto(search));
             });
         return searches;
+    }
+
+    public List<SearchToCrawlDto> getSearchToCrawl() {
+        List<SearchToCrawlDto> searchesToCrawl = new ArrayList<>();
+        searchRepository
+            .findByCrawledAtIsNullOrCrawledAtBefore(LocalDate.now().minusDays(1))
+            .forEach(search -> {
+                SearchToCrawlDto searchToCrawlDto = new SearchToCrawlDto(
+                        search.getId(),
+                        search.getKeyword(),
+                        search.getUrls()
+                );
+                searchesToCrawl.add(searchToCrawlDto);
+            });
+        return searchesToCrawl;
+    }
+    public void updateCrawlerAt(Long searchId) {
+        SearchUrlEntity search = searchRepository.findById(searchId)
+                .orElseThrow(() -> new RuntimeException(
+                        "Search nicht gefunden"
+                ));
+        search.setCrawledAt(LocalDate.now());
+        searchRepository.save(search);
     }
 }

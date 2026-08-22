@@ -1,5 +1,5 @@
 package com.JobHafen.PostgreSQLService.entity;
-
+import java.time.LocalDate;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -30,6 +30,9 @@ public class SearchUrlEntity {
     @Column
     private String radius;
 
+    @Column
+    private LocalDate crawledAt;
+
     public void setUrls(List<String> urls) {
         this.urls = urls;
     }
@@ -55,4 +58,9 @@ public class SearchUrlEntity {
     public String getRadius() {return radius;}
 
     public Long getId(){return id;}
+
+    public void setCrawledAt(LocalDate crawledAt) {
+        this.crawledAt = crawledAt;
+    }
+    public LocalDate getCrawledAt(){return this.crawledAt;}
 }

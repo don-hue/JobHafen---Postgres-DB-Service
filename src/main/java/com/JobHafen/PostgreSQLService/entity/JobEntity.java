@@ -53,4 +53,5 @@ public class JobEntity {
         this.search = search;
     }
 
+    public Long getId() { return this.id;}
 }

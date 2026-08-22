@@ -23,7 +23,6 @@ import java.util.List;
 public class UtilityService {
     public List<String> buildStepstoneUrl(SearchDto search){
         try{
-            System.out.println("XXX in try stepstone");
             String url = "https://www.stepstone.de/" +
                     "jobs/" + URLEncoder.encode(search.keyword(), StandardCharsets.UTF_8).replace("+", "%20") + "/" +
                     "in-" + search.postal_code() + "?whatType=autosuggest&" +
