@@ -2,7 +2,6 @@ package com.JobHafen.PostgreSQLService.consumer;
 import com.JobHafen.PostgreSQLService.config.RabbitMQSearchConfig;
 import com.JobHafen.PostgreSQLService.dto.SearchDto;
 import com.JobHafen.PostgreSQLService.dto.SearchEntityDto;
-import com.JobHafen.PostgreSQLService.entity.SearchUrlEntity;
 import com.JobHafen.PostgreSQLService.service.SearchService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
