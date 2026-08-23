@@ -6,7 +6,7 @@
 
 ## 📋 Agenda
 
-1. [Java PostgreSQL Service](#-java-crawler)
+1. [Java PostgreSQL Service](#-java-postgreslq-service)
 2. [Über das Projekt](#-über-das-projekt)
 3. [Architektur](#-architektur)
 4. [Vision](#-vision)
@@ -17,8 +17,9 @@
 Ein PostgreSQL Service, der mit der DB verbunden ist. Der Service ist für alle Operationen an der DB verantwortlich.
 
 Es wird *Maven* verwendet mit **Spring-Boot** verwendet.
+
 ```mvn spring-boot:run```
----
+
 
 ## 📌 Über das Projekt
 
