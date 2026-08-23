@@ -12,7 +12,7 @@
 4. [Vision](#-vision)
 ---
 
-## 📂 Java Crawler
+## 📂 Java PostgreSQL Service
 
 Ein PostgreSQL Service, der mit der DB verbunden ist. Der Service ist für alle Operationen an der DB verantwortlich.
 
@@ -27,7 +27,7 @@ Es wird *Maven* verwendet mit **Spring-Boot** verwendet.
 
 Das Ziel von Jobhafen ist es, die größten Jobportale automatisiert zu durchsuchen, die gefundenen Stellenangebote zentral zusammenzuführen und übersichtlich darzustellen.
 
-Dadurch müssen Jobsuchende nicht mehr mehrere Jobportale einzeln durchsuchen,einzel anmelden und Duplikate händisch aussortieren, sondern können sich voll und ganz auf ihre Jobsuche konzentrieren.
+Dadurch müssen Jobsuchende nicht mehr mehrere Jobportale einzeln durchsuchen, einzeln anmelden und Duplikate händisch aussortieren, sondern können sich voll und ganz auf ihre Jobsuche konzentrieren.
 
 Jobhafen verfolgt damit das Ziel, die Jobsuche **zentraler, übersichtlicher und effizienter** zu gestalten.
 
@@ -39,7 +39,7 @@ P.S.💅 Ich bin der Meinung, dass wir( als User) nicht mehrere Portale, mehrere
 
 Jobhafen basiert auf einer **hybriden Microservice Architektur**, bei der unterschiedliche Technologien für Frontend und Backend eingesetzt werden. Es gibt mehrere Microservices, die mittels RabbitMQ miteinander kommunizieren. Aufgrund der hohen Diversität von Frontend-Frameworks kommuniziert das FE **nicht** mit RabbitMQ direkt, sondern schickt über HTTPS-Request seine Anfragen an einen **Proxy**. Dieser Proxy erinnert an eine milde Ausprägung eines Orchestrators, wobei hierbei das SAGA-Pattern nicht explizit, aber doch im philosophischen Gedankenmodell implementiert wurde d.h. der Proxy verwaltet Kommunikationsketten.
 
-Durch dieses Fundament ist die Architektur  Stack-agnostisch. Jedes Feature kann durch einen Microservice implementiert werden, jeder Baustein kann ersetzt werden, da die Kommunikation durch RabbitMQ stattfindet.
+Durch dieses Fundament ist die Architektur Stack-agnostisch. Jedes Feature kann durch einen Microservice implementiert werden, jeder Baustein kann ersetzt werden, da die Kommunikation durch RabbitMQ stattfindet.
 
 Primär werden DirectMessages verwendet mit dem AMQ-Protokoll.
 
