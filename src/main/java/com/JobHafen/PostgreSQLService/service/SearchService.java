@@ -1,8 +1,8 @@
 package com.JobHafen.PostgreSQLService.service;
 import com.JobHafen.PostgreSQLService.config.Constants;
-import com.JobHafen.PostgreSQLService.dto.SearchDto;
-import com.JobHafen.PostgreSQLService.dto.SearchEntityDto;
-import com.JobHafen.PostgreSQLService.dto.SearchToCrawlDto;
+import de.TheDonJuan.dto.search.SearchDto;
+import de.TheDonJuan.dto.search.SearchEntityDto;
+import de.TheDonJuan.dto.search.SearchToCrawlDto;
 import com.JobHafen.PostgreSQLService.entity.SearchUrlEntity;
 import com.JobHafen.PostgreSQLService.repository.SearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +50,6 @@ public class SearchService {
             });
         return searches;
     }
-
     public List<SearchToCrawlDto> getSearchToCrawl() {
         List<SearchToCrawlDto> searchesToCrawl = new ArrayList<>();
         searchRepository
@@ -72,5 +71,11 @@ public class SearchService {
                 ));
         search.setCrawledAt(LocalDate.now());
         searchRepository.save(search);
+    }
+    public void deleteSearch(Long id) {
+        SearchUrlEntity searchToBeDeleted = searchRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Suche konnte nicht gelöscht werden"));
+
+        searchRepository.delete(searchToBeDeleted);
     }
 }

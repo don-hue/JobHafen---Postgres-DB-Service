@@ -1,7 +1,7 @@
 package com.JobHafen.PostgreSQLService.service;
 import com.JobHafen.PostgreSQLService.config.Constants;
-import com.JobHafen.PostgreSQLService.dto.SearchDto;
-import com.JobHafen.PostgreSQLService.dto.SearchEntityDto;
+import de.TheDonJuan.dto.search.SearchDto;
+import de.TheDonJuan.dto.search.SearchEntityDto;
 import com.JobHafen.PostgreSQLService.entity.SearchUrlEntity;
 import org.htmlunit.WebClient;
 import org.springframework.stereotype.Service;

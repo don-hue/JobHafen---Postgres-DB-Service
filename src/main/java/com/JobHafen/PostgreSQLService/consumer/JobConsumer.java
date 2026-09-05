@@ -1,11 +1,11 @@
 package com.JobHafen.PostgreSQLService.consumer;
 
 import com.JobHafen.PostgreSQLService.config.RabbitMQJobConfig;
-import com.JobHafen.PostgreSQLService.dto.JobDto;
-import com.JobHafen.PostgreSQLService.dto.JobEntityDto;
-import com.JobHafen.PostgreSQLService.dto.SearchToCrawlDto;
+import de.TheDonJuan.dto.ResponseDto;
+import de.TheDonJuan.dto.job.JobDto;
+import de.TheDonJuan.dto.job.JobEntityDto;
+import de.TheDonJuan.dto.job.JobUpdateAppliedDto;
 import com.JobHafen.PostgreSQLService.service.JobService;
-import com.JobHafen.PostgreSQLService.service.SearchService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,21 +15,8 @@ import java.util.List;
 @Component
 public class JobConsumer {
     @Autowired
-    SearchService searchService;
-    @Autowired
     JobService jobService;
-    @RabbitListener(
-            queues = RabbitMQJobConfig.GET_SEARCHES_TO_CRAWL_REQUEST_QUEUE,
-            containerFactory = "jobListenerFactory"
-    )
-    public List<SearchToCrawlDto> getSearchesToCrawl() {
-        try {
-            return searchService.getSearchToCrawl();
-        } catch (Exception e) {
-            System.out.println("Error:" + e.getMessage());
-            throw e;
-        }
-    }
+
 
     @RabbitListener(
             queues = RabbitMQJobConfig.SAVE_JOB_QUEUE,
@@ -59,10 +46,16 @@ public class JobConsumer {
     }
 
     @RabbitListener(
-            queues = RabbitMQJobConfig.CONFIRM_CRAWL_REQUEST_QUEUE,
+            queues = RabbitMQJobConfig.PUT_JOB_APPLIED_REQUEST_QUEUE,
             containerFactory = "jobListenerFactory"
     )
-    public void confirmCrawled(Long searchId) {
-        searchService.updateCrawlerAt(searchId);
+    public ResponseDto putJobApplied(JobUpdateAppliedDto jobUpdateAppliedDto) {
+        try{
+            jobService.putJobApplied(jobUpdateAppliedDto);
+            return new ResponseDto(true);
+        } catch (Exception e) {
+            System.out.println("Error:" + e.getMessage());
+            return new ResponseDto(false);
+        }
     }
 }

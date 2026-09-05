@@ -1,6 +1,7 @@
 package com.JobHafen.PostgreSQLService.service;
-import com.JobHafen.PostgreSQLService.dto.JobDto;
-import com.JobHafen.PostgreSQLService.dto.JobEntityDto;
+import de.TheDonJuan.dto.job.JobDto;
+import de.TheDonJuan.dto.job.JobEntityDto;
+import de.TheDonJuan.dto.job.JobUpdateAppliedDto;
 import com.JobHafen.PostgreSQLService.entity.CompanyEntity;
 import com.JobHafen.PostgreSQLService.entity.JobEntity;
 import com.JobHafen.PostgreSQLService.entity.SearchUrlEntity;
@@ -9,7 +10,6 @@ import com.JobHafen.PostgreSQLService.repository.JobRepository;
 import com.JobHafen.PostgreSQLService.repository.SearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,5 +73,11 @@ public class JobService {
                 jobRepository.save(job);
             }
         }
+    }
+    public void putJobApplied(JobUpdateAppliedDto jobUpdateAppliedDto) {
+        JobEntity job = jobRepository.findById(jobUpdateAppliedDto.id())
+                .orElseThrow(()-> new RuntimeException("Job nicht gefunden"));
+        job.setApplied(jobUpdateAppliedDto.applied());
+        jobRepository.save(job);
     }
 }
